@@ -1,8 +1,13 @@
-# Locus DataSource SDK
+# Locus Plugin SDK
 
-This package provides the core interface for creating external data source integrations with Locus.
+This package provides the core interfaces for creating plugins for Locus, including:
+- **DataSource**: External data source integrations
+- **Client**: Custom client implementations
+- **Store**: Storage backend integrations
 
 ## Overview
+
+### DataSource Plugins
 
 A `DataSource` represents any external API or service that can provide:
 - **Topics**: High-level items like questions, articles, or videos
@@ -10,17 +15,26 @@ A `DataSource` represents any external API or service that can provide:
 
 Common examples include Stack Exchange, Wikipedia, YouTube, or custom knowledge bases.
 
-## Contributing Data Sources
+### Client Plugins
 
-The official implementations of this SDK are maintained in the [`datasource-implementations`](https://github.com/locus-search/datasource-implementations) repository, which contains data sources used in the private Locus core software.
+Client plugins provide custom implementations for interacting with Locus services.
 
-### Creating a New Data Source
+### Store Plugins
 
-If you wish to contribute a new data source to Locus:
+Store plugins provide custom storage backend implementations for persisting Locus data.
 
-1. **Start with the template**: Use the [`datasource-template`](https://github.com/locus-search/datasource-template) repository to create your implementation
-2. **Build your integration**: Implement the `DataSource` interface following best practices (see below)
-3. **Submit for review**: Open a pull request on the [`datasource-implementations`](https://github.com/locus-search/datasource-implementations) repository
+## Contributing Plugins
+
+The official implementations of this SDK are maintained in separate repositories for each plugin type.
+
+### Creating a New Plugin
+
+If you wish to contribute a new plugin to Locus:
+
+1. **Choose your plugin type**: Determine if you're creating a DataSource, Client, or Store plugin
+2. **Start with the appropriate template**: Use the relevant template repository for your plugin type
+3. **Build your integration**: Implement the required interface following best practices (see below)
+4. **Submit for review**: Open a pull request on the appropriate implementations repository
 
 ### Acceptance Criteria
 
@@ -45,7 +59,9 @@ Implementations that do not meet these criteria will be rejected.
 
 This approach reduces the attack surface and ensures our software can be thoroughly vetted for enterprise deployment.
 
-## Interface
+## DataSource Interface
+
+The DataSource interface allows plugins to integrate external data sources with Locus:
 
 ```go
 type DataSource interface {
@@ -56,14 +72,14 @@ type DataSource interface {
 }
 ```
 
-## Quick Start
+## Quick Start - DataSource Plugin
 
 ```go
 package main
 
 import (
     "fmt"
-    datasource "github.com/locus-search/datasource-sdk"
+    datasource "github.com/locus-search/plugin-sdk"
 )
 
 type MyDataSource struct {
@@ -106,12 +122,12 @@ func (ds *MyDataSource) FetchData(count int, topicID int64) ([]datasource.DataSo
 ## Installation
 
 ```bash
-go get github.com/locus-search/datasource-sdk
+go get github.com/locus-search/plugin-sdk
 ```
 
 ## Documentation
 
-### Types
+### DataSource Types
 
 #### `DataSourceTopic`
 Represents a high-level item that may contain relevant information.
@@ -188,6 +204,8 @@ if strings.TrimSpace(input.QuestionText) == "" {
 ```
 
 ## Examples
+
+### DataSource Plugin Examples
 
 See the following reference implementations:
 - [datasource-wikipedia](https://github.com/locus-search/datasource-wikipedia) - Simple REST API integration
